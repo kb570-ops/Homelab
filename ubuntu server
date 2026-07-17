@@ -1,0 +1,26 @@
+01-ubuntu-server/README.md
+
+Step 1.
+  -Built a 'server' installing a LINUX on VMWARE parallels but never interacting with the GUI. The VM plays the role of a computer in server.
+   It has its own IP address from Parallels network, making it reachable as a remote PC. 
+
+Step 2. 
+  -Set up remote access via installing SSH service on the server. My laptop became the remote admin computer workstation and the VM window
+   became the emergency access computer. 
+
+Step 3. Security patches via the following methods
+  -used 'passwd' to change the default password set up on the VMware
+  -created a key pair for login via a private key and a public key. 
+  -disabled password login entirely
+
+Step 4. Maintenance 
+  - I patached a 473 package backlog, learned the login baner is a status report, rebooted to load new kernel.
+
+Overview:
+  -I deployed an Ubuntu VM, manage it headless over SSH, replaced password authentication with key-based auth, 
+   verified the lockdown with a deliberate failed login, and patched it to current.
+
+Key lessons:
+ran keygen on the wrong machine, learned to read prompts; learned commented config lines are ignored; 
+grep silence means no matchesran keygen on the wrong machine, learned to read prompts; learned commented config lines are ignored; 
+grep silence means no matches
