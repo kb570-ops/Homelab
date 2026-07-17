@@ -1,26 +1,45 @@
-01-ubuntu-server/README.md
+# 01 — Ubuntu Server (Parallels VM)
 
-Step 1.
-  -Built a 'server' installing a LINUX on VMWARE parallels but never interacting with the GUI. The VM plays the role of a computer in server.
-   It has its own IP address from Parallels network, making it reachable as a remote PC. 
+**Goal:** Deploy a Linux server, manage it headless over SSH,
+harden access, and run a full patch cycle with verification.
 
-Step 2. 
-  -Set up remote access via installing SSH service on the server. My laptop became the remote admin computer workstation and the VM window
-   became the emergency access computer. 
+## 1. Build
+Installed Ubuntu 24.04 (ARM64) in a Parallels VM on an M1 Mac.
+The VM gets its own IP on the Parallels network (10.211.55.x),
+making it reachable like a remote machine. GUI is never used —
+console access is reserved for bootstrap and recovery only.
 
-Step 3. Security patches via the following methods
-  -used 'passwd' to change the default password set up on the VMware
-  -created a key pair for login via a private key and a public key. 
-  -disabled password login entirely
+## 2. Remote access
+Installed `openssh-server` on the VM. My Mac is the admin
+workstation; all operations happen over SSH. Local console =
+crash cart.
 
-Step 4. Maintenance 
-  - I patached a 473 package backlog, learned the login baner is a status report, rebooted to load new kernel.
+## 3. Hardening
+- Rotated the default `parallels` account password (`passwd`)
+- Generated an ed25519 key pair on the Mac; deployed the public
+  key with `ssh-copy-id` — login is now a cryptographic challenge,
+  not a password
+- Disabled password authentication in `/etc/ssh/sshd_config`
+  (checked `/etc/ssh/sshd_config.d/` for overrides — none found)
+- **Verified:** `ssh -o PubkeyAuthentication=no` is rejected with
+  `Permission denied (publickey)` — key-only access confirmed
+- Passphrase encrypts the private key locally (macOS keychain);
+  account password retained for `sudo` privilege escalation
 
-Overview:
-  -I deployed an Ubuntu VM, manage it headless over SSH, replaced password authentication with key-based auth, 
-   verified the lockdown with a deliberate failed login, and patched it to current.
+## 4. Patching + verification
+Cleared a 473-package backlog (`apt update && apt upgrade`),
+rebooted to load the new kernel. Post-patch checks:
+- `uptime` — reboot confirmed (up 13 min)
+- `uname -r` — kernel moved 6.14.0-27 → 6.14.0-28
+- `apt list --upgradable` — only phased updates remain
+- `systemctl --failed` — 0 failed units, clean boot
 
-Key lessons:
-ran keygen on the wrong machine, learned to read prompts; learned commented config lines are ignored; 
-grep silence means no matchesran keygen on the wrong machine, learned to read prompts; learned commented config lines are ignored; 
-grep silence means no matches
+## Lessons
+- Ran `ssh-keygen` on the server instead of the Mac — read the
+  prompt before typing; know which machine you're on
+- Commented (`#`) config lines are ignored — the setting isn't
+  active until uncommented
+- Empty grep output means no matches — sometimes silence is the
+  passing result
+- Manual SSH verification works for one box but doesn't scale —
+  motivation for the monitoring project later
