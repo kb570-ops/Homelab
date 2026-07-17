@@ -26,6 +26,8 @@ crash cart.
 - Passphrase encrypts the private key locally (macOS keychain);
   account password retained for `sudo` privilege escalation
 
+<img width="648" height="34" alt="image" src="https://github.com/user-attachments/assets/a16bcf2d-2565-4feb-bd69-6509d7e8d68f" />
+
 ## 4. Patching + verification
 Cleared a 473-package backlog (`apt update && apt upgrade`),
 rebooted to load the new kernel. Post-patch checks:
@@ -33,6 +35,8 @@ rebooted to load the new kernel. Post-patch checks:
 - `uname -r` — kernel moved 6.14.0-27 → 6.14.0-28
 - `apt list --upgradable` — only phased updates remain
 - `systemctl --failed` — 0 failed units, clean boot
+
+<img width="895" height="110" alt="image" src="https://github.com/user-attachments/assets/a92e3757-8f50-452e-bb3a-33f39b0df469" />
 
 ## Lessons
 - Ran `ssh-keygen` on the server instead of the Mac — read the
