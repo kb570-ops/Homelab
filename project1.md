@@ -32,7 +32,7 @@ crash cart.
 Cleared a 473-package backlog (`apt update && apt upgrade`),
 rebooted to load the new kernel. Post-patch checks:
 - `uptime` — reboot confirmed (up 13 min)
-- `uname -r` — kernel moved 6.14.0-27 → 6.14.0-28
+- `uname -r — kernel moved 6.14.0-27 → 7.0.0-28 (new kernel series via update)
 - `apt list --upgradable` — only phased updates remain
 - `systemctl --failed` — 0 failed units, clean boot
 
